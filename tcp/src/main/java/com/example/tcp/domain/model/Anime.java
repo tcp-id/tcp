@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "animes")
-public class Animes {
+@Table(name = "anime")
+public class Anime {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public UUID animeid;
