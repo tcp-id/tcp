@@ -1,5 +1,6 @@
 package com.example.tcp.controller;
 
+import com.example.tcp.domain.dto.ErrorMessage;
 import com.example.tcp.domain.dto.ResponseList;
 import com.example.tcp.domain.model.Anime;
 import com.example.tcp.repository.AnimeRepository;
@@ -22,6 +23,7 @@ public class AnimeController {
     public ResponseEntity<?> findAllAnime() {
         return ResponseEntity.ok().body(new ResponseList(animeRepository.findBy()));
     }
+
     @GetMapping("/{id}")
     public List<?> findAnimePorId(@PathVariable UUID animeid) {
         return animeRepository.findAll();
@@ -33,7 +35,16 @@ public class AnimeController {
     }
 
     @DeleteMapping
-    public void removeAnime(@RequestBody Anime anime)
+    public ResponseEntity<?> delAnime(@PathVariable UUID id){
+        Anime anime = animeRepository.findById(id).orElse(null);
+        if(anime == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorMessage.message("No hi es"));
+        }
+        animeRepository.delete(anime);
+        return  ResponseEntity.ok().build();
+    }
+
+    /*
     @DeleteMapping(value = "/posts/{id}")
 
 
@@ -45,11 +56,14 @@ public class AnimeController {
         return new ResponseEntity<>(id, HttpStatus.OK);
 
 
-        public boolean delete(Long id) {
-            var isRemoved = this.posts.removeIf(post -> post.getId().equals(id));
+        public boolean delete (Long id){
+            var isRemoved = this.post.removeIf(post -> post.getId().equals(id));
             return isRemoved;
         }
 
+
+    }
+    */
 
 }
 
